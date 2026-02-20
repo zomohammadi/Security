@@ -9,13 +9,20 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class Config {
 
-    @Bean
+    //@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.addFilterBefore(
                 new RequestValidationFilter(),
                 BasicAuthenticationFilter.class).authorizeHttpRequests(c -> c.anyRequest().permitAll()
         );
+        return http.build();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain1(HttpSecurity http) throws Exception {
+        http.addFilterAfter(new AuthenticationLoggingFilter(), BasicAuthenticationFilter.class)
+                .authorizeHttpRequests(c -> c.anyRequest().permitAll());
         return http.build();
     }
 }
